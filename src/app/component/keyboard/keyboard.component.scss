@@ -1,0 +1,15 @@
+:host {
+ display: grid;
+  grid-gap: 3px;
+  grid-template-columns: repeat(5, 20px);
+
+  button {
+    width: 20px;
+    height: 20px;
+    text-align: center;
+  }
+  button:hover {
+    background-color: darkblue;
+    color: white;
+  }
+}

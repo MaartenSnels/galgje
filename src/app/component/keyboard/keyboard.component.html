@@ -1,0 +1,6 @@
+  <button *ngFor="let key of keys"
+          [ngClass]="getClass(key)"
+          [disabled]="key.clicked"
+          (click)="keyClicked(key)">
+    {{key.letter}}
+  </button>

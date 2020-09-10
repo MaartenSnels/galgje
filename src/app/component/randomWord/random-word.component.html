@@ -1,0 +1,7 @@
+<div *ngIf="word">{{word}}</div>
+<button (click)="nextWordFromInternet()">next word from internet</button>
+<button (click)="nextRandomWordFromList()">next word from list</button>
+<app-keyboard
+  (buttonClicked)="handleButtonClicked($event)"
+  (selectedChange)="handleSelectedChange($event)"
+></app-keyboard>
