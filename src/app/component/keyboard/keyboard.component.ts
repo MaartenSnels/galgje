@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {fromEvent} from "rxjs";
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {fromEvent, Subscription} from "rxjs";
 
 interface key {
   letter: string;
@@ -12,10 +12,11 @@ interface key {
   styleUrls: ['./keyboard.component.scss']
 })
 
-export class KeyboardComponent implements OnInit {
+export class KeyboardComponent implements OnInit, OnDestroy {
 
   keysList:Array<string> = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
   keys: Array<key> = [];
+  private subscription: Subscription;
 
   @Output() buttonClicked: EventEmitter<string> = new EventEmitter<string>();
   @Output() selectedChange: EventEmitter<Array<string>> = new EventEmitter<Array<string>>();
@@ -29,12 +30,15 @@ export class KeyboardComponent implements OnInit {
   @Input() disabled: boolean = false;
 
   constructor() {
-    fromEvent<KeyboardEvent>(document, 'keydown').subscribe(next => this.handleKeyDown(next));
-
+    this.subscription = fromEvent<KeyboardEvent>(document, 'keydown').subscribe(next => this.handleKeyDown(next));
   }
 
   ngOnInit(): void {
     this.keysList.forEach(k => this.keys.push({clickCount: 0, letter: k}));
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   keyClicked(pressed: key) {
