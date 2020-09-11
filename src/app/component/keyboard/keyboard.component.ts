@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {fromEvent} from "rxjs";
 
 interface key {
   letter: string;
@@ -27,7 +28,10 @@ export class KeyboardComponent implements OnInit {
   @Input() oneLetter: boolean = false;
   @Input() disabled: boolean = false;
 
-  constructor() { }
+  constructor() {
+    fromEvent<KeyboardEvent>(document, 'keydown').subscribe(next => this.handleKeyDown(next));
+
+  }
 
   ngOnInit(): void {
     this.keysList.forEach(k => this.keys.push({clickCount: 0, letter: k}));
@@ -58,5 +62,13 @@ export class KeyboardComponent implements OnInit {
       return false;
     }
     return this.oneLetter || key.clickCount == 0
+  }
+
+  private handleKeyDown(event: KeyboardEvent) {
+    const key = event.key.toLowerCase();
+    const found = this.keys.filter(k => k.letter.toLowerCase() == key);
+    if (found && found.length == 1) {
+      this.keyClicked(found[0]);
+    }
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {RandomWordService} from "../../service/random-word.service";
-import {Observable} from "rxjs";
+import {fromEvent, Observable} from "rxjs";
 
 @Component({
   selector: 'app-word',
@@ -67,4 +67,6 @@ export class RandomWordComponent implements OnInit {
     this.youWon = value;
     this.youLost = !value;
   }
+
+
 }

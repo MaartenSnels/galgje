@@ -79,12 +79,11 @@ export class DisplayWordComponent implements OnInit {
   fail(): void {
     this.errorLevel++;
     this.errorLevelChange.emit(this.errorLevel);
-    if (this.errorLevel > 6) {
+    const lost = this.errorLevel > 6;
+    if (lost) {
       this.youLost.emit();
-      this.lost = true;
-    } else {
-      this.lost = false;
     }
+    this.lost = lost;
   }
 
   getClass(char: character) {
