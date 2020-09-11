@@ -1,15 +1,27 @@
 <app-display-word
   [word]="word"
   [guess]="guess"
+  [oneLetter]="oneLetter"
+  (youWon)="setWin(true)"
+  (youLost)="setWin(false)"
   (errorLevelChange)="handleErrorLevelChange($event)"
   >
-
 </app-display-word>
-<button (click)="nextWordFromInternet()">next word from internet</button>
-<button (click)="nextRandomWordFromList()">next word from list</button>
+<output *ngIf="youLost">{{'Helaas niet geraden. Het woord was "' + word + '"'}}</output>
 <app-keyboard
   (buttonClicked)="handleButtonClicked($event)"
   (selectedChange)="handleSelectedChange($event)"
   [clear]="clear"
+  [oneLetter]="oneLetter"
+  [disabled]="youWon || youLost"
 ></app-keyboard>
-<app-galg [error]="errorLevel"></app-galg>
+<button (click)="nextWordFromInternet()">next word from internet</button>
+<button (click)="nextRandomWordFromList()">next word from list</button>
+<div>
+  <input type="checkbox" id="oneLetter" [(ngModel)]="oneLetter" [disabled]="started">
+  <label for="oneLetter">Een letter per keer</label>
+</div>
+<app-galg
+  [error]="errorLevel"
+  [youWon]="youWon"
+></app-galg>

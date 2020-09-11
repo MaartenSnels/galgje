@@ -1,10 +1,10 @@
 :host {
  display: grid;
   grid-gap: 3px;
-  grid-template-columns: repeat(5, 20px);
+  grid-template-columns: repeat(5, 60px);
 
   button {
-    width: 20px;
+    width: 60px;
     height: 20px;
     text-align: center;
   }

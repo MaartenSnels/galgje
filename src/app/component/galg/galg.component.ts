@@ -16,10 +16,16 @@ export class GalgComponent implements OnInit {
     'assets/img/galgje_6.gif',
     'assets/img/galgje_7.gif'
   ]
+  gefiliciteerd: string = 'assets/img/gefiliciteerd.jpg';
   imageToShow: string;
 
   constructor() { }
 
+  @Input() set youWon(value: boolean) {
+    if (value) {
+      this.imageToShow = this.gefiliciteerd;
+    }
+  }
   @Input() set error(value: number) {
     if (value <= 0) {
       this.imageToShow = '';

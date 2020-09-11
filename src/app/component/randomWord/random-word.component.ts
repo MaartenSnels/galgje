@@ -8,7 +8,6 @@ import {Observable} from "rxjs";
   styleUrls: ['./random-word.component.scss']
 })
 export class RandomWordComponent implements OnInit {
-  private guess: string = '';
 
   constructor(private randomWordService : RandomWordService) {
   }
@@ -16,28 +15,44 @@ export class RandomWordComponent implements OnInit {
   word: string;
   clear: boolean = false;
   errorLevel: number = 0;
+  oneLetter: boolean = true;
+  youWon: boolean = false;
+  youLost: boolean = false;
+  started: boolean = false;
+  lostHeader: string;
+  private guess: string = '';
 
   ngOnInit(): void {
     this.nextWordFromInternet();
   }
 
   nextWordFromInternet(): void {
-    this.clear = false;
-    setTimeout(() => this.clear=true, 200);
-    this.randomWordService.getWordFromInternet().subscribe(w => this.word = w);
-    this.guess = '';
+    this.nextWord(true);
   }
-
-
   nextRandomWordFromList(): void {
+    this.nextWord(false);
+  }
+
+  nextWord(internet: boolean): void {
     this.clear = false;
+    this.youWon = false;
+    this.youLost = false;
+    this.started = false;
     setTimeout(() => this.clear=true, 200);
-    this.word = this.randomWordService.nextRandomWordFromList();
+    if (internet) {
+      this.randomWordService.getWordFromInternet().subscribe(w => this.word = w);
+    } else {
+      this.word = this.randomWordService.nextRandomWordFromList();
+    }
     this.guess = '';
   }
+
+
 
   handleButtonClicked(event: string) {
+    this.started = true;
     this.guess = event;
+    setTimeout(() => this.guess='', 200);
   }
 
   handleSelectedChange(event: Array<string>) {
@@ -46,5 +61,10 @@ export class RandomWordComponent implements OnInit {
 
   handleErrorLevelChange(event: number) {
     this.errorLevel = event;
+  }
+
+  setWin(value: boolean) {
+    this.youWon = value;
+    this.youLost = !value;
   }
 }

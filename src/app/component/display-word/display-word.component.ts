@@ -12,38 +12,47 @@ interface character {
   templateUrl: './display-word.component.html',
   styleUrls: ['./display-word.component.scss']
 })
+
 export class DisplayWordComponent implements OnInit {
   private _word: string;
-  private guesses: string[] = [];
   display: Array<character>;
   private errorLevel: number;
+  private lost: boolean = false;
 
   constructor() { }
 
 
   @Output() errorLevelChange: EventEmitter<number> = new EventEmitter<number>();
+  @Output() youWon: EventEmitter<void> = new EventEmitter();
+  @Output() youLost: EventEmitter<void> = new EventEmitter();
+
   @Input() set word(value: string) {
     this._word = value;
     this.restart();
   }
+  @Input() oneLetter:boolean = false;
 
   @Input() set guess(value: string) {
-
+    if (!value) {
+      return;
+    }
     const item = value[0];
-    this.guesses.push(item);
+    if (!item) {
+      return;
+    }
     this.solve(item);
   }
   ngOnInit(): void {
   }
 
   private restart() {
-    this.guesses = [];
     this.setWord();
     this.errorLevel = 0;
     this.errorLevelChange.emit(this.errorLevel);
   }
 
   private setWord() {
+    this.lost = false;
     this.display = [];
     if (!this._word) {
       return;
@@ -59,18 +68,36 @@ export class DisplayWordComponent implements OnInit {
       this.fail();
       return
     }
-    found.forEach(c => c.solved = true)
+    if (this.oneLetter) {
+      found[0].solved = true;
+    } else {
+      found.forEach(c => c.solved = true)
+    }
+    this.checkSolved();
   }
 
   fail(): void {
     this.errorLevel++;
     this.errorLevelChange.emit(this.errorLevel);
+    if (this.errorLevel > 6) {
+      this.youLost.emit();
+      this.lost = true;
+    } else {
+      this.lost = false;
+    }
   }
 
   getClass(char: character) {
     return char.solved ? 'solved' : '';
   }
   getChar(char: character) {
-    return char.solved ? char.letter : '-';
+    return char.solved || this.lost ? char.letter : '-';
+  }
+
+  private checkSolved() {
+    const found : Array<character> = this.display.filter(d => !d.solved);
+    if (!found || found.length == 0) {
+      this.youWon.emit();
+    }
   }
 }
