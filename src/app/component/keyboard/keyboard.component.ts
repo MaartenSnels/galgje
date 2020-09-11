@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 interface key {
   letter: string;
@@ -11,7 +11,6 @@ interface key {
   styleUrls: ['./keyboard.component.scss']
 })
 
-
 export class KeyboardComponent implements OnInit {
 
   keysList:Array<string> = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
@@ -19,6 +18,12 @@ export class KeyboardComponent implements OnInit {
 
   @Output() buttonClicked: EventEmitter<string> = new EventEmitter<string>();
   @Output() selectedChange: EventEmitter<Array<string>> = new EventEmitter<Array<string>>();
+  @Input() set clear(value: boolean) {
+    if (value) {
+      this.keys.forEach(k => k.clicked = false);
+      this.selectedChange.emit([])
+    }
+  }
 
   constructor() { }
 

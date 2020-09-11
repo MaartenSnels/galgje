@@ -1,7 +1,15 @@
-<div *ngIf="word">{{word}}</div>
+<app-display-word
+  [word]="word"
+  [guess]="guess"
+  (errorLevelChange)="handleErrorLevelChange($event)"
+  >
+
+</app-display-word>
 <button (click)="nextWordFromInternet()">next word from internet</button>
 <button (click)="nextRandomWordFromList()">next word from list</button>
 <app-keyboard
   (buttonClicked)="handleButtonClicked($event)"
   (selectedChange)="handleSelectedChange($event)"
+  [clear]="clear"
 ></app-keyboard>
+<app-galg [error]="errorLevel"></app-galg>
