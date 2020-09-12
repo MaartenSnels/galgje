@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { RandomWordComponent } from './component/randomWord/random-word.component';
+import { GalgComponent } from './component/galg/galg.component';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import { DisplayWordComponent } from './component/display-word/display-word.component';
 import { KeyboardComponent } from './component/keyboard/keyboard.component';
@@ -10,16 +10,16 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
-import { GalgComponent } from './component/galg/galg.component';
+import { DisplayGalgComponent } from './component/display-galg/display-galg.component';
 import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
     AppComponent,
-    RandomWordComponent,
+    GalgComponent,
     DisplayWordComponent,
     KeyboardComponent,
-    GalgComponent
+    DisplayGalgComponent
   ],
   imports: [
     BrowserModule,

@@ -19,11 +19,9 @@ export class KeyboardComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   @Output() buttonClicked: EventEmitter<string> = new EventEmitter<string>();
-  @Output() selectedChange: EventEmitter<Array<string>> = new EventEmitter<Array<string>>();
   @Input() set clear(value: boolean) {
     if (value) {
       this.keys.forEach(k => k.clickCount = 0);
-      this.selectedChange.emit([])
     }
   }
   @Input() oneLetter: boolean = false;
@@ -44,8 +42,6 @@ export class KeyboardComponent implements OnInit, OnDestroy {
   keyClicked(pressed: key) {
     pressed.clickCount++;
     this.buttonClicked.emit(pressed.letter);
-    const selected: Array<string> = this.keys.filter(key => key.clickCount > 0).map(key => key.letter);
-    this.selectedChange.emit(selected);
   }
 
   getLetter(key: key): string {
@@ -72,7 +68,9 @@ export class KeyboardComponent implements OnInit, OnDestroy {
     const key = event.key.toLowerCase();
     const found = this.keys.filter(k => k.letter.toLowerCase() == key);
     if (found && found.length == 1) {
-      this.keyClicked(found[0]);
+      if (this.canClick(found[0])) {
+        this.keyClicked(found[0]);
+      }
     }
   }
 }

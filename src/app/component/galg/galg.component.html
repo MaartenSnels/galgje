@@ -1,1 +1,22 @@
-<img *ngIf="imageToShow"  class="img-responsive" [src]="imageToShow">
+<app-display-word
+  [characters]="characters"
+  [youLost]="youLost"
+  >
+</app-display-word>
+<output *ngIf="youLost">{{'Helaas niet geraden. Het woord was "' + word + '"'}}</output>
+<app-keyboard
+  (buttonClicked)="handleButtonClicked($event)"
+  [clear]="clear"
+  [oneLetter]="oneLetter"
+  [disabled]="youWon || youLost"
+></app-keyboard>
+<button (click)="nextWordFromInternet()">next word from internet</button>
+<button (click)="nextRandomWordFromList()">next word from list</button>
+<div>
+  <input type="checkbox" id="oneLetter" [(ngModel)]="oneLetter" [disabled]="started">
+  <label for="oneLetter">Een letter per keer</label>
+</div>
+<app-galg
+  [error]="errorLevel"
+  [youWon]="youWon"
+></app-galg>

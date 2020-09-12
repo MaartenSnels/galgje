@@ -14,14 +14,28 @@ export class RandomWordService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getWordFromInternet() : Observable<string>{
+  nextRandomWordFromInternet() : Observable<string> {
     const url = `${URL}/word?number=1`
     return this.httpClient.get<Array<string>>(url).pipe(map(words => words[0]));
   }
 
-  nextRandomWordFromList(): string {
+  nextRandomWordFromList(): Observable<string> {
     const random = Math.floor(Math.random() * words.length);
-    return words[random];
+    const word = words[random];
+
+    return new Observable(
+      subscriber => {
+        subscriber.next(word);
+        subscriber.complete();
+      }
+    );
+  }
+
+  nextWord(fromInternet: boolean) : Observable<string> {
+    if (fromInternet) {
+      return this.nextRandomWordFromInternet();
+    }
+    return this.nextRandomWordFromList();
   }
 
 }

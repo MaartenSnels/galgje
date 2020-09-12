@@ -1,1 +1,1 @@
-<div *ngFor="let char of display" [ngClass]="getClass(char)">{{getChar(char)}}</div>
+<div *ngFor="let char of characters" [ngClass]="getClass(char)" [title]="char.letter">{{char.display}}</div>
