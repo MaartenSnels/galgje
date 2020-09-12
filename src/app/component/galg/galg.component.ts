@@ -19,15 +19,14 @@ export class GalgComponent implements OnInit, OnDestroy {
   constructor(private randomWordService : RandomWordService) {
   }
 
-  word: string;
   clear: boolean = false;
   errorLevel: number = 0;
   oneLetter: boolean = true;
   youWon: boolean = false;
   youLost: boolean = false;
   started: boolean = false;
+  characters: Array<character> = []
   private subscriptions: Array<Subscription> = [];
-  private characters: Array<character> = []
 
   ngOnInit(): void {
     this.nextWordFromInternet();
@@ -48,7 +47,6 @@ export class GalgComponent implements OnInit, OnDestroy {
   }
 
   private setWord(word: string) {
-    this.word = word;
     this.clear = false;
     this.youWon = false;
     this.youLost = false;
@@ -56,11 +54,11 @@ export class GalgComponent implements OnInit, OnDestroy {
     this.errorLevel = 0;
     setTimeout(() => this.clear=true, 200);
     this.characters = [];
-    if (!this.word) {
+    if (!word) {
       return;
     }
-    for(let i = 0; i < this.word.length; i++) {
-      this.characters.push({letter: this.word[i], solved: false, display: '-'});
+    for(let i = 0; i < word.length; i++) {
+      this.characters.push({letter: word[i], solved: false, display: '-'});
     }
   }
 
